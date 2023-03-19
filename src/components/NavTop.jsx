@@ -12,6 +12,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import img4 from '../images/4.png'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -35,11 +38,20 @@ const NavTop = () => {
     setAnchorElUser(null);
   };
 
+  //store.js에 요청을 보내는 함수
+  let dispatch = useDispatch();
+  let navigate = useNavigate();
+  let member = useSelector((state)=>{return state.member});
+  console.log(member);
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          {/* big screen logo s */}
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          {/* big screen logo e */}
+          {/* big screen writing s */}
           <Typography
             variant="h6"
             noWrap
@@ -55,9 +67,11 @@ const NavTop = () => {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            LOGO111
           </Typography>
+          {/* big screen writing e */}
 
+          {/* small screen dropdown s */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -94,7 +108,13 @@ const NavTop = () => {
               ))}
             </Menu>
           </Box>
+          {/* small screen dropdown e */}
+
+          {/* small screen logo s */}
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          {/* small screen logo e */}
+          
+          {/* small screen writing s */}
           <Typography
             variant="h5"
             noWrap
@@ -111,8 +131,11 @@ const NavTop = () => {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            LOGO22
           </Typography>
+          {/* small screen writing e */}
+
+          {/* big screen page list s */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
@@ -124,11 +147,14 @@ const NavTop = () => {
               </Button>
             ))}
           </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
+          {/* big screen page list e */}
+          
+          {
+            member ? 
+            <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Uka" src={img4} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -153,7 +179,15 @@ const NavTop = () => {
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
+            </Box>
+
+            :
+
+            <>
+              <Button onClick={()=>{navigate('/login')}} color="inherit">Login</Button>
+              <Button onClick={()=>{navigate('/signUp')}} color="inherit">Sign Up</Button>    
+            </>
+          }
         </Toolbar>
       </Container>
     </AppBar>

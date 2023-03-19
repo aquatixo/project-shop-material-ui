@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,13 +12,37 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import MemberService from '../service/MemberService';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMember } from '../store/slices/memberSlice';
+
 const theme = createTheme();
 
 const Login = () => {
+  let navigate = useNavigate();
+  let dispatch = useDispatch();
 
-  const handleSubmit = () => {
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  let member = useSelector((state)=>{return state.member});
+  
+  const handleSubmit = async () => {
 
-    alert('signin');
+    // await MemberService.login('test@test.com','12341234');
+    await MemberService.login(email,password);
+
+    await MemberService.getMyMemberInfo().then(
+      (response) => {
+        // console.log(response);
+        dispatch(setMember(response));
+        navigate('/');
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
   };
   
   return (
@@ -33,7 +57,7 @@ const Login = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} onClick={()=>{navigate('/')}}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -49,6 +73,8 @@ const Login = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email} 
+              onChange={(e)=>{setEmail(e.target.value)}}
             />
             <TextField
               margin="normal"
@@ -59,6 +85,8 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password} 
+              onChange={(e)=>{setPassword(e.target.value)}}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

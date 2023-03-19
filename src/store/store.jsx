@@ -3,7 +3,7 @@ import member from './slices/memberSlice.jsx'
 
 let excludedRoutes = createSlice({
   name : 'excludedRoutes'
-  ,initialState : ['/signin', '/signup']
+  ,initialState : ['/login', '/signUp']
 });
 
 export default configureStore({

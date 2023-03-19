@@ -8,7 +8,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let member = createSlice({
   name : 'member',
-  initialState : {}
+  initialState : null
 
   ,reducers : {
     removeMember(state){
