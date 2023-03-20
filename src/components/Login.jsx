@@ -28,7 +28,9 @@ const Login = () => {
   let member = useSelector((state)=>{return state.member});
   
   const handleSubmit = async () => {
-
+    if(email == '' || password == ''){
+      return;
+    }
     // await MemberService.login('test@test.com','12341234');
     await MemberService.login(email,password);
 

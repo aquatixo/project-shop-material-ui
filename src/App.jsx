@@ -17,6 +17,7 @@ function App() {
   let excludedRoutes = useSelector((state)=>{return state.excludedRoutes});
   let member = useSelector((state)=>{return state.member});
   
+  //TODO do useEffect getMemberInfo on load
   // useEffect()
 
   return (
