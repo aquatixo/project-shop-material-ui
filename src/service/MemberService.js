@@ -3,11 +3,11 @@ import HeaderService from "./HeaderService";
 // const API_URL = "http://localhost:8080/auth/";
 const API_URL = "http://localhost:6969/";
 
-const register = (email, password, nickname) => {
+const register = (email, password, name) => {
   return axios.post(API_URL + "auth/" + "signup", {
     email
     ,password
-    ,nickname
+    ,name
   });
 };
 

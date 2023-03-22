@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import MemberService from '../service/MemberService';
 
 const theme = createTheme();
 
@@ -38,7 +39,21 @@ const SignUp = () => {
       return;
     }
 
-    alert('asd');
+    MemberService.register(email, password, name).then(
+      (response) => {
+        navigate("/login");
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        // setMessage(resMessage);
+        // setSuccessful(false);
+      }
+    );
     
   };
 
