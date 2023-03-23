@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import MemberService from '../service/MemberService';
+import EmailService from '../service/EmailService';
 
 const theme = createTheme();
 
@@ -24,9 +25,16 @@ const SignUp = () => {
 
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
+  const [passwordCheck,setPasswordCheck] = useState('');
   const [name,setName] = useState('');
 
-  const handleSubmit = () => {
+  const [emailCode, setEmailCode] = useState('');
+  const [emailCodeCheck, setEmailCodeCheck] = useState('');
+
+  //0:button not clicked 1: button clicked 2: code ok
+  const [emailAuthState, setEmailAuthState] = useState(0);
+
+  const handleSignUp = () => {
     if(email == ''){
       return;
     }
@@ -44,17 +52,29 @@ const SignUp = () => {
         navigate("/login");
       },
       (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        console.log(error);
         // setMessage(resMessage);
         // setSuccessful(false);
       }
     );
     
+  };
+
+  const handleSendEmail = () => {
+    setEmailAuthState(1);
+
+    //send email logic
+    EmailService.sendEmail(email).then(
+      (response) => {
+        console.log(response);
+        setEmailCodeCheck(response.data);
+      },
+      (error) => {
+        console.log(error);
+        // setMessage(resMessage);
+        // setSuccessful(false);
+      }
+    );
   };
 
   return (
@@ -103,6 +123,48 @@ const SignUp = () => {
                 />
               </Grid>
               <Grid item xs={12}>
+                <Button
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 1, mb: 1 }}
+                  onClick={()=>{handleSendEmail()}}
+                >
+                  Get Code
+                </Button>
+              </Grid>
+              
+              {/* When Email getCode is Clicked  */}
+              {
+                emailAuthState === 1 && 
+                <>
+                  <Grid item xs={9}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="emailCode"
+                      label="Email Code"
+                      name="emailCode"
+                      autoComplete="emailCode"
+                      value={emailCode} 
+                      onChange={(e)=>{setEmailCode(e.target.value)}}
+                    />
+                  </Grid>
+                  <Grid item xs={3} display="flex" alignItems="center">
+                    <Button
+                        type="button"
+                        variant="outlined"
+                        onClick={()=>{alert('asd');}}
+                    >
+                      Check
+                    </Button>
+                  </Grid>
+                </>
+              }
+
+              
+              
+              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
@@ -113,6 +175,19 @@ const SignUp = () => {
                   autoComplete="new-password"
                   value={password} 
                   onChange={(e)=>{setPassword(e.target.value)}}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="passwordCheck"
+                  label="PasswordCheck"
+                  type="password"
+                  id="passwordCheck"
+                  autoComplete="new-password"
+                  value={passwordCheck} 
+                  onChange={(e)=>{setPasswordCheck(e.target.value)}}
                 />
               </Grid>
               {/* <Grid item xs={12}>
@@ -127,7 +202,7 @@ const SignUp = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={()=>{handleSubmit()}}
+              onClick={()=>{handleSignUp()}}
             >
               Sign Up
             </Button>
