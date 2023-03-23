@@ -19,9 +19,9 @@ let member = createSlice({
     ,setMember(state, action){
       const obj = action.payload;
 
-      const {email, nickname} = obj;
+      const {email, name} = obj;
 
-      return {email : email,  nickname : nickname};
+      return {email : email,  name : name};
     }
   }
 });

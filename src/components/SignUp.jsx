@@ -16,6 +16,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import MemberService from '../service/MemberService';
 import EmailService from '../service/EmailService';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 const theme = createTheme();
 
@@ -31,10 +33,17 @@ const SignUp = () => {
   const [emailCode, setEmailCode] = useState('');
   const [emailCodeCheck, setEmailCodeCheck] = useState('');
 
-  //0:button not clicked 1: button clicked 2: code ok
+  //0:button not clicked 1: button clicked 2: code ok, can sign up
   const [emailAuthState, setEmailAuthState] = useState(0);
 
+  //0: no show error 1: show error
+  const [errorState, setErrorState] = useState(0);
+
   const handleSignUp = () => {
+    console.log(email);
+    console.log(password);
+    console.log(name);
+    console.log(emailAuthState);
     if(email == ''){
       return;
     }
@@ -47,35 +56,53 @@ const SignUp = () => {
       return;
     }
 
+    //email check done
+    if(emailAuthState !== 2){
+      return;
+    }
+
     MemberService.register(email, password, name).then(
       (response) => {
         navigate("/login");
       },
       (error) => {
         console.log(error);
-        // setMessage(resMessage);
-        // setSuccessful(false);
       }
     );
     
   };
 
   const handleSendEmail = () => {
-    setEmailAuthState(1);
+    if(email == '') {
+      return;
+    }
+
+    // regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!emailRegex.test(email)){
+      return;
+    }
 
     //send email logic
     EmailService.sendEmail(email).then(
       (response) => {
-        console.log(response);
-        setEmailCodeCheck(response.data);
+        //console.log(response);
+        //show email code and check button
+        setEmailAuthState(1);
+        setEmailCodeCheck(response);
       },
       (error) => {
         console.log(error);
-        // setMessage(resMessage);
-        // setSuccessful(false);
       }
     );
   };
+
+  const handleCodeCheck = () => {
+    if(emailCode === emailCodeCheck){
+      setEmailAuthState(2);
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -154,15 +181,25 @@ const SignUp = () => {
                     <Button
                         type="button"
                         variant="outlined"
-                        onClick={()=>{alert('asd');}}
+                        onClick={()=>{handleCodeCheck();}}
                     >
                       Check
                     </Button>
                   </Grid>
                 </>
               }
-
               
+              {/* When Email getCode is Clicked  */}
+              {
+                emailAuthState === 2 && 
+                <>
+                  <Grid item xs={12}>
+                    <Alert variant="outlined" severity="success">
+                      Email Checked
+                    </Alert>
+                  </Grid>
+                </>
+              }
               
               <Grid item xs={12}>
                 <TextField
