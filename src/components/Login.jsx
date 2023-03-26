@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import MemberService from '../service/MemberService';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMember } from '../store/slices/memberSlice';
+import { GoogleLogin } from '@react-oauth/google';
 
 const theme = createTheme();
 
@@ -46,7 +47,23 @@ const Login = () => {
     );
 
   };
+
+  const handleGoogle = async (response) => {
+    await MemberService.loginOauth(response);
+
+    await MemberService.getMyMemberInfo().then(
+      (response) => {
+        // console.log(response);
+        dispatch(setMember(response));
+        navigate('/');
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
   
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -90,10 +107,10 @@ const Login = () => {
               value={password} 
               onChange={(e)=>{setPassword(e.target.value)}}
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="button"
               fullWidth
@@ -103,6 +120,18 @@ const Login = () => {
             >
               Sign In
             </Button>
+
+            <GoogleLogin
+              onSuccess={handleGoogle}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+
+              type="icon"
+              shape="square"
+            />          
+
+
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">

@@ -29,6 +29,23 @@ const login = async (email, password) => {
   return jwtAuth;
 };
 
+const loginOauth = async (response) => {
+
+  const jwtAuth = await axios
+    .post(API_URL + "auth/" + "loginOauth", {
+      ...response
+    })
+    .then((response) => {
+      if (response.data.accessToken) {
+        localStorage.setItem("member", JSON.stringify(response.data));
+      }
+
+      return response.data;
+    }) 
+
+  return jwtAuth;
+};
+
 const logout = () => {
   localStorage.removeItem("member");
 };
@@ -55,6 +72,7 @@ const MemberService = {
   logout,
   getCurrentUser,
   getMyMemberInfo,
+  loginOauth,
 };
 
 export default MemberService;

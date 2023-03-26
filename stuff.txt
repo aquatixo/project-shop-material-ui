@@ -13,6 +13,8 @@ npm install @reduxjs/toolkit react-redux
 axios
 npm install axios
 
+npm install @react-oauth/google@latest
+
 not yet
 protected routes
 
