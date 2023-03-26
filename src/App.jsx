@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 import Cart from './components/Cart'
@@ -9,6 +9,8 @@ import MyPage from './components/MyPage'
 import NavTop from './components/NavTop'
 import Sandbox from './components/Sandbox'
 import SignUp from './components/SignUp'
+import { removeMember, setMember } from './store/slices/memberSlice';
+import MemberService from './service/MemberService';
 
 function App() {
   //current page path
@@ -17,9 +19,30 @@ function App() {
   let excludedRoutes = useSelector((state)=>{return state.excludedRoutes});
   let member = useSelector((state)=>{return state.member});
   
+  let dispatch = useDispatch();
   //TODO do useEffect getMemberInfo on load
-  // useEffect()
+  useEffect(() => {
+    let memberLocalStorage = JSON.parse(localStorage.getItem('member'));
+    if(memberLocalStorage == null){
+      return;
+    }
+    MemberService.getMyMemberInfo().then(
+      (response) => {
+        // console.log(response);
+        dispatch(setMember(response));
+      }
+    )
+    .catch(
+      (error) => {
+        MemberService.logout();
+        dispatch(removeMember());
+        window.location.reload;
+      }
+    );
+    ;
+  },[]);
 
+  
   return (
     <>
       {!excludedRoutes.includes(pathname) 

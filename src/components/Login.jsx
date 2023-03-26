@@ -17,6 +17,7 @@ import MemberService from '../service/MemberService';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMember } from '../store/slices/memberSlice';
 import { GoogleLogin } from '@react-oauth/google';
+import Divider from '@mui/material/Divider';
 
 const theme = createTheme();
 
@@ -120,16 +121,22 @@ const Login = () => {
             >
               Sign In
             </Button>
+            
+            <div className="mt10">
+              <Divider light />
+            </div>
 
-            <GoogleLogin
-              onSuccess={handleGoogle}
-              onError={() => {
-                console.log('Login Failed');
-              }}
-
-              type="icon"
-              shape="square"
-            />          
+            <div className="center mt25 mb25">
+              <GoogleLogin
+                onSuccess={handleGoogle}
+                onError={() => {
+                  console.log('Login Failed');
+                }}
+                
+                type="icon"
+                shape="square"
+                />          
+            </div>
 
 
             <Grid container>

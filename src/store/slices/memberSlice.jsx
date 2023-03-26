@@ -14,7 +14,7 @@ let member = createSlice({
     removeMember(state){
       // MemberService.logout();
       //member initial state to blank{}
-      return {};
+      return null;
     }
     ,setMember(state, action){
       const obj = action.payload;

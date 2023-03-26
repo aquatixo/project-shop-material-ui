@@ -56,6 +56,10 @@ const SignUp = () => {
       return;
     }
 
+    if(password != passwordCheck){
+      return;
+    }
+
     //email check done
     if(emailAuthState !== 2){
       return;
