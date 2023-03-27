@@ -44,7 +44,7 @@ const NavTop = () => {
   let dispatch = useDispatch();
   let navigate = useNavigate();
   let member = useSelector((state)=>{return state.member});
-  console.log(member);
+  // console.log(member);
 
   return (
     <AppBar position="static">
