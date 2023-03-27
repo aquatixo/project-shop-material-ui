@@ -6,7 +6,7 @@ import img6 from '../images/6.png'
 import Home from '@mui/icons-material/Home';
 
 const paperStyle = {
-  height : "500px"
+  // height : "500px"
 }
 
 const HomeCarousel = () => {
@@ -25,7 +25,7 @@ const HomeCarousel = () => {
   
   return (
     <div>
-      <Carousel
+      <Carousel 
         animation='slide'
       >
         {
@@ -40,13 +40,13 @@ const HomeCarousel = () => {
 function Item(props)
 {
     return (
-      <Paper style={paperStyle}>
+      <Paper style={paperStyle} >
           <h2>{props.item.name}</h2>
-          <p>{props.item.description}</p>
+          {/* <p>{props.item.description}</p> */}
           {/* <img src={props.item.img} className="center-fit center"/> */}
-          <Button className="CheckButton">
+          {/* <Button className="CheckButton">
               Check it out!
-          </Button>
+          </Button> */}
       </Paper>
     )
 }
