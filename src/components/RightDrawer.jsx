@@ -11,8 +11,15 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import MemberService from '../service/MemberService';
+import { removeMember } from '../store/slices/memberSlice';
 
 const RightDrawer = () => {
+  let dispatch = useDispatch();
+  let navigate = useNavigate();
+  
   const [state, setState] = React.useState({
     right: false
   });
@@ -37,9 +44,9 @@ const RightDrawer = () => {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <ListItem key="account" disablePadding 
+        <ListItem key="myPage" disablePadding 
           onClick={() => {
-            alert('account');
+            navigate('/myPage');
             toggleDrawer(anchor, false)(null);
           }}
         >
@@ -47,12 +54,12 @@ const RightDrawer = () => {
             <ListItemIcon>
               <PersonIcon />
             </ListItemIcon>
-            <ListItemText primary="Account" />
+            <ListItemText primary="My Page" />
           </ListItemButton>
         </ListItem>
         <ListItem key="cart" disablePadding 
           onClick={() => {
-            alert('cart');
+            navigate('/cart');
             toggleDrawer(anchor, false)(null);
           }}
         >
@@ -69,7 +76,9 @@ const RightDrawer = () => {
       <List>
         <ListItem key="logout" disablePadding 
           onClick={() => {
-            alert('logout');
+            dispatch(removeMember());
+            MemberService.logout();
+            navigate('/login');
             toggleDrawer(anchor, false)(null);
           }}
         >
@@ -86,10 +95,16 @@ const RightDrawer = () => {
   );
   
   return (
-    <div>
-      {["right"].map((anchor) => (
+    <>
+    {
+      ["right"].map((anchor) => (
         <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+          <Button onClick={toggleDrawer(anchor, true)}
+            style={{color:"white"}}
+          >
+            <PersonIcon />
+            {/* {anchor} */}
+          </Button>
           <Drawer
             anchor={anchor}
             open={state[anchor]}
@@ -98,8 +113,9 @@ const RightDrawer = () => {
             {rightList(anchor)}
           </Drawer>
         </React.Fragment>
-      ))}
-    </div>
+      ))
+    }
+    </>
   )
 }
 

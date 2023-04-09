@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import MemberService from '../service/MemberService';
 import { removeMember } from '../store/slices/memberSlice';
+import RightDrawer from './RightDrawer';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -182,11 +183,14 @@ const NavTop = () => {
             //   ))}
             // </Menu>
             // </Box>
-            <Button onClick={()=>{
+            <>
+            {/* <Button onClick={()=>{
               dispatch(removeMember());
               MemberService.logout();
               navigate('/login')
-            }} color="inherit">Log Out</Button>
+            }} color="inherit">Log Out</Button> */}
+              <RightDrawer/>
+            </>
             :
 
             <>
