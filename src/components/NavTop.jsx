@@ -48,7 +48,7 @@ const NavTop = () => {
   // console.log(member);
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{backgroundColor:'#282926',opacity:'0.9'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* big screen logo s */}
