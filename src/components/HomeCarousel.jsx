@@ -80,17 +80,16 @@ function MyCarousel(props){
 function Item(props)
 {
     return (
-      <Paper sx={{ boxShadow: 0 }}>
+      <Paper sx={{ boxShadow: 0 }}
+        className='vh50'
+      >
           <div style={{display:'flex'
             , justifyContent:"center"
             , alignItems: "center"
           }}>
             <img 
               src={props.item.img} 
-              style={{
-                // width:'100%',
-                height: '50vh'
-              }}
+              className='vh50'
             />
 
             <div style={{

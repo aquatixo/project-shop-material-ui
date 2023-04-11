@@ -78,3 +78,7 @@
 .box-shadow-none{
   box-shadow: none;
 }
+
+.vh50{
+  height: 50vh;
+}
