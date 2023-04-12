@@ -11,6 +11,7 @@ import Sandbox from './components/Sandbox'
 import SignUp from './components/SignUp'
 import { removeMember, setMember } from './store/slices/memberSlice';
 import MemberService from './service/MemberService';
+import Product from './components/Product'
 
 function App() {
   //current page path
@@ -57,6 +58,8 @@ function App() {
 
         <Route path="/cart" element={<Cart/>}></Route>
         <Route path="/myPage" element={<MyPage/>}></Route>
+
+        <Route path="/product" element={<Product/>}></Route>
 
         <Route path="/sandbox" element={<Sandbox/>}></Route>
       </Routes>
