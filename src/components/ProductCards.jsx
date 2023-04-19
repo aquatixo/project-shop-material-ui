@@ -1,44 +1,73 @@
 import React from 'react'
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
 import bluearcimg from '../images/blue_arc_logo.jpg';
-import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
+import { Box, Grid, Typography, Button, Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import {products} from '../products.js';
 
 const ProductCards = () => {
   let navigate = useNavigate();
-  
+
+  const ProductCard = styled(Card)(({ theme }) => ({
+    borderRadius: theme.spacing(2),
+    transition: 'transform 0.15s ease-in-out',
+    '&:hover': {
+      transform: 'scale(1.05)',
+    },
+  }));
+
+  const ProductCardMedia = styled(CardMedia)(({ theme }) => ({
+    paddingTop: '100%',
+    backgroundSize: 'contain',
+  }));
+
+  const ProductCardContent = styled(CardContent)(({ theme }) => ({
+    textAlign: 'center',
+    paddingBottom: theme.spacing(2),
+  }));
+
+  const ProductCardTitle = styled(Typography)(({ theme }) => ({
+    fontWeight: 'bold',
+  }));
+
+  const ProductCardDescription = styled(Typography)(({ theme }) => ({
+    color: theme.palette.text.secondary,
+  }));
+
+  const ProductCardPrice = styled(Typography)(({ theme }) => ({
+    fontWeight: 'bold',
+    marginTop: theme.spacing(2),
+  }));
+
   return (
     <>
-      <Grid container spacing={2} style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-        {
-        [1,2,3].map((anchor) => (
-          
-          <Card sx={{ maxWidth: 345 }} onClick={()=>{navigate('/product')}}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="140"
-                image={bluearcimg}
-                alt="green iguana"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Lizard
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Lizards are a widespread group of squamate reptiles, with over 6,000
-                  species, ranging across all continents except Antarctica
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        ))
-        }
-      </Grid>
+      <Box py={10} >
+        <Grid container spacing={4}>
+          {products.map((product) => (
+            <Grid item xs={12} sm={6} md={4} key={product.id}>
+              <ProductCard>
+                <ProductCardMedia 
+                  image={product.image} 
+                />
+                <ProductCardContent>
+                  <ProductCardTitle variant="h6">
+                    {product.name}
+                  </ProductCardTitle>
+                  <ProductCardDescription variant="body2">
+                    {product.description}
+                  </ProductCardDescription>
+                  <ProductCardPrice variant="h5">
+                    ${product.price}
+                  </ProductCardPrice>
+                  <Button variant="contained" sx={{ mt: 2 }}>
+                    Add to cart
+                  </Button>
+                </ProductCardContent>
+              </ProductCard>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </>
   )
 }

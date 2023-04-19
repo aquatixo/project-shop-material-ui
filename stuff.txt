@@ -17,6 +17,8 @@ npm install @react-oauth/google@latest
 
 npm install react-material-ui-carousel --save
 
+npm i @mui/styles --force
+
 not yet
 protected routes
 
