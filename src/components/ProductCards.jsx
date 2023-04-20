@@ -1,73 +1,74 @@
-import React from 'react'
-import bluearcimg from '../images/blue_arc_logo.jpg';
+import { Box ,Container, Grid, Card, CardActionArea, CardMedia, CardContent, Typography, Button, makeStyles } from '@material-ui/core';
+import { products } from '../products.js';
+import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
-import { Box, Grid, Typography, Button, Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import {products} from '../products.js';
+import Title from './Title.jsx';
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    maxWidth: 1080,
+  },
+  card: {
+    position: 'relative',
+    '&:hover $addBtn': {
+      transform: 'translateY(0)',
+    },
+    '&:hover $media': {
+      transform: 'scale(1.1)',
+    },
+  },
+  media: {
+    height: 200,
+    transition: 'transform 0.3s ease-out',
+  },
+  content: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(2),
+  },
+  addBtn: {
+    position: 'absolute',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+    transform: 'translateY(100%)',
+    transition: 'transform 0.3s ease-out',
+  },
+}));
 
 const ProductCards = () => {
   let navigate = useNavigate();
-
-  const ProductCard = styled(Card)(({ theme }) => ({
-    borderRadius: theme.spacing(2),
-    transition: 'transform 0.15s ease-in-out',
-    '&:hover': {
-      transform: 'scale(1.05)',
-    },
-  }));
-
-  const ProductCardMedia = styled(CardMedia)(({ theme }) => ({
-    paddingTop: '100%',
-    backgroundSize: 'contain',
-  }));
-
-  const ProductCardContent = styled(CardContent)(({ theme }) => ({
-    textAlign: 'center',
-    paddingBottom: theme.spacing(2),
-  }));
-
-  const ProductCardTitle = styled(Typography)(({ theme }) => ({
-    fontWeight: 'bold',
-  }));
-
-  const ProductCardDescription = styled(Typography)(({ theme }) => ({
-    color: theme.palette.text.secondary,
-  }));
-
-  const ProductCardPrice = styled(Typography)(({ theme }) => ({
-    fontWeight: 'bold',
-    marginTop: theme.spacing(2),
-  }));
+  const classes = useStyles();
 
   return (
     <>
-      <Box py={10} >
-        <Grid container spacing={4}>
+      <Title title='Products'/>
+      <Container className={classes.container}>
+        <Grid container spacing={3}>
           {products.map((product) => (
-            <Grid item xs={12} sm={6} md={4} key={product.id}>
-              <ProductCard>
-                <ProductCardMedia 
-                  image={product.image} 
-                />
-                <ProductCardContent>
-                  <ProductCardTitle variant="h6">
-                    {product.name}
-                  </ProductCardTitle>
-                  <ProductCardDescription variant="body2">
-                    {product.description}
-                  </ProductCardDescription>
-                  <ProductCardPrice variant="h5">
-                    ${product.price}
-                  </ProductCardPrice>
-                  <Button variant="contained" sx={{ mt: 2 }}>
-                    Add to cart
-                  </Button>
-                </ProductCardContent>
-              </ProductCard>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+              <Card className={classes.card}>
+                <CardActionArea onClick={()=>{navigate('/product')}}>
+                  <CardMedia
+                    className={classes.media}
+                    image={product.image}
+                    title={product.title}
+                  />
+                  <CardContent className={classes.content}>
+                    <Typography variant="h6">{product.name}</Typography>
+                    <Typography variant="body1">${product.price}</Typography>
+                  </CardContent>
+                </CardActionArea>
+                <Button className={classes.addBtn} variant="contained" color="primary"
+                  onClick={()=>{alert('add')}}
+                >
+                  <AddIcon />
+                </Button>
+              </Card>
             </Grid>
           ))}
         </Grid>
-      </Box>
+      </Container>
     </>
   )
 }
